@@ -1,0 +1,7 @@
+../Core/Src/menu.c:15:13:Menu_DrawHeader	16	static
+../Core/Src/menu.c:23:13:Menu_DrawItem	40	static
+../Core/Src/menu.c:33:6:Menu_Init	8	static
+../Core/Src/menu.c:40:6:Menu_ShowWelcome	24	static
+../Core/Src/menu.c:66:6:Menu_Draw	24	static
+../Core/Src/menu.c:83:6:Menu_Highlight	32	static
+../Core/Src/menu.c:99:12:Menu_HandleInput	24	static
