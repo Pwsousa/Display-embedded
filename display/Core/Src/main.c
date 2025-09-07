@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
 #include "menu.h"
+#include "keypad.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,6 +95,7 @@ int main(void)
   LCD_Init();
   LCD_DisplayOn();
   HAL_GPIO_WritePin(LCD_BL_GPIO_Port, LCD_BL_Pin, GPIO_PIN_SET);
+  Keypad_Init();
   Menu_ShowWelcome("Inicializando...", 5000);
   Menu_Init();
 
@@ -106,6 +108,42 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    // Scan keypad for input
+    Keypad_Scan();
+    
+    // Handle navigation
+    int8_t nav_delta = Keypad_GetNavigationDelta();
+    if (nav_delta != 0) {
+      Menu_HandleInput(nav_delta);
+    }
+    
+    // Handle selection
+    if (Keypad_IsSelectPressed()) {
+      MenuAction action = Menu_HandleInput(0); // 0 means select/confirm
+      
+      switch (action) {
+        case MENU_ACTION_CONNECT:
+          Menu_ShowWelcome("Conectando...", 2000);
+          Menu_Draw(); // Return to menu
+          break;
+          
+        case MENU_ACTION_SETTINGS:
+          Menu_ShowWelcome("Configuracoes", 2000);
+          Menu_Draw(); // Return to menu
+          break;
+          
+        case MENU_ACTION_INFO:
+          Menu_ShowWelcome("Informacoes do Sistema", 2000);
+          Menu_Draw(); // Return to menu
+          break;
+          
+        default:
+          break;
+      }
+    }
+    
+    // Small delay to prevent excessive CPU usage
+    HAL_Delay(10);
   }
   /* USER CODE END 3 */
 }
